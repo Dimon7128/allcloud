@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# But not these directories (allows to specify files deeper)
+!/**/
+
+# However, do not ignore .gitignore and specific file extensions
+!.gitignore
+!*.tf
+!*.yaml
