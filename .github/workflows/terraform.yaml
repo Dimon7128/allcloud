@@ -22,7 +22,7 @@ jobs:
       with:
         aws-region: eu-west-1
         role-to-assume: arn:aws:iam::443370677015:oidc-provider/token.actions.githubusercontent.com
-        role-session-name: GitHubActionsSession
+        role-session-name: OIDC_GitHub_Action 
 
 
     - name: Set up Terraform
