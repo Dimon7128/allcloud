@@ -4,14 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'terraform/dynamic_ec2/**'
   pull_request:
     branches:
       - main
-    paths:
-      - 'terraform/dynamic_ec2/**'
-
+   
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -28,28 +24,28 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules
 
     - name: Terraform Plan
       id: plan
       run: |
         terraform plan -no-color
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules
       continue-on-error: true
 
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: |
-        terraform apply -auto-approve
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+    # - name: Terraform Apply
+    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    #   run: |
+    #     terraform apply -auto-approve
+    #   working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Terraform Format Check
       run: terraform fmt -check
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules
 
     - name: Terraform Validate
       run: terraform validate
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules
 
     - name: Upload Terraform Plan Output
       if: always() && steps.plan.outcome == 'failure'
