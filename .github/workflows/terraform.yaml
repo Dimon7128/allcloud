@@ -105,17 +105,16 @@ jobs:
         terraform apply -auto-approve
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-    - name: Comment Terraform 
-      Plan on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const output = process.env.PLAN;
-            const issue_number = context.issue.number;
-            const message = `### Terraform Plan Output\n\`\`\`\n${output}\n\`\`\``;
-            github.rest.issues.createComment({
-              issue_number: issue_number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: message});
+    - name: Comment Terraform Plan on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const output = process.env.PLAN;
+          const issue_number = context.issue.number;
+          const message = `### Terraform Plan Output\n\`\`\`\n${output}\n\`\`\``;
+          github.rest.issues.createComment({
+            issue_number: issue_number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message});
