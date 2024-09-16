@@ -7,7 +7,7 @@ variable "instance_count" {
 variable "ami" {
   description = "AMI to use for the EC2 instance"
   type        = string
-  default = "ami-05134c8ef96964280"
+  default = "ami-03cc8375791cb8bcf"
 }
 
 variable "instance_type" {
@@ -19,7 +19,7 @@ variable "instance_type" {
 variable "subnet_ids" {
   description = "List of subnet IDs to deploy instances in"
   type        = list(string)
-  default = ["subnet-44da3b3c", "subnet-0d787a46"]
+  default = ["subnet-0d517fadf11587cf7", "subnet-0f76d6b30b2fa69cf"]
 }
 
 variable "tags" {
