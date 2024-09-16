@@ -22,16 +22,17 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure AWS Credentials
-      id: aws-creds
       uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::295257193777:role/GitHub
         aws-region: eu-west-1
         role-session-name: GitHubActionSession
         audience: sts.amazonaws.com
+
     - name: Verify AWS identity
       run: |
         aws sts get-caller-identity
+
     - name: Request OIDC Token
       run: |
         echo "Requesting OIDC token"
@@ -55,15 +56,9 @@ jobs:
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
       continue-on-error: true
 
-    # - name: Terraform Apply
-    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    #   run: |
-    #     terraform apply -auto-approve
-    #   working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+  
 
-    # - name: Terraform Format Check
-    #   run: terraform fmt -check
-    #   working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+ 
 
     - name: Terraform Validate
       run: terraform validate
@@ -76,3 +71,22 @@ jobs:
         name: terraform-plan
         path: ./terraform/dynamic_ec2/modules/dynamic_ec2/plan.txt
 
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: |
+        terraform apply -auto-approve
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+
+    - name: Comment Terraform Plan on PR
+      if: github.event_name == 'pull_request'
+        uses: actions/github-script@v5
+        with:
+          script: |
+          const output = process.env.PLAN;
+          const issue_number = context.issue.number;
+          const message = `### Terraform Plan Output\n\`\`\`\n${output}\n\`\`\``;
+          github.rest.issues.createComment({
+            issue_number: issue_number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message});
