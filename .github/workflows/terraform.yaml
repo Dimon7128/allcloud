@@ -105,7 +105,9 @@ jobs:
         terraform apply -auto-approve
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-    - name: Comment Terraform Plan on PR
+    - name: Comment Terraform 
+    
+     Plan on PR
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v5
       with:
