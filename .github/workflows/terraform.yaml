@@ -50,7 +50,8 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: |
-        terraform plan -no-color -out=plan.txt
+        pwd
+        terraform plan -no-color > plan.txt
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
       continue-on-error: true
 
@@ -73,5 +74,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
-        path: plan.txt
+        path: ./terraform/dynamic_ec2/modules/dynamic_ec2/plan.txt
 
