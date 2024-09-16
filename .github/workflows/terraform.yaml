@@ -29,11 +29,9 @@ jobs:
         aws-region: eu-west-1
         role-session-name: GitHubActionSession
         audience: sts.amazonaws.com
-    
     - name: Verify AWS identity
       run: |
       aws sts get-caller-identity
-
     - name: Request OIDC Token
       run: |
       echo "Requesting OIDC token"
