@@ -25,8 +25,9 @@ jobs:
     - name: Set up GitHub CLI
       run: |
         sudo apt update && sudo apt install -y gh
-        gh auth setup-git
-        gh auth refresh -s write:packages
+
+    - name: Authenticate GitHub CLI
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
     - name: Create Pull Request
       if: contains(steps.commit-message.outputs.message, 'trigger-PR')
