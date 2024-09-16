@@ -85,15 +85,21 @@ jobs:
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Comment Terraform Plan on PR
-      # if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request'
       uses: actions/github-script@v5
+      env:
+        PLAN: ${{ steps.plan.outputs.plan }}
       with:
         script: |
-          const output = process.env.PLAN;
+          const output = `### Terraform Plan Output\n\`\`\`\n${{ steps.plan.outputs.plan }}\n\`\`\``;
           const issue_number = context.issue.number;
-          const message = `### Terraform Plan Output\n\`\`\`\n${output}\n\`\`\``;
-          github.rest.issues.createComment({
-            issue_number: issue_number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: message});
+          if (issue_number) {
+            github.rest.issues.createComment({
+              issue_number: issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+          } else {
+            console.log("No issue number found. Skipping comment.");
+          }
