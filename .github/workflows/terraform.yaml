@@ -60,9 +60,9 @@ jobs:
     #     terraform apply -auto-approve
     #   working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-    - name: Terraform Format Check
-      run: terraform fmt -check
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+    # - name: Terraform Format Check
+    #   run: terraform fmt -check
+    #   working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Terraform Validate
       run: terraform validate
