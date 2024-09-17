@@ -6,4 +6,3 @@
 # subnet_ids =  "subnet-0c54b26677193b715valu"
 # tags = "test"
 
-
