@@ -20,7 +20,7 @@ jobs:
         body: |
           Hello, changes have been requested for your pull request.
           Please address the comments and update the PR.
-        to: ${{ github.event.pull_request.user.email }}  # Use PR issuer's email
+        to: ${{ github.event.pull_request.user.email }}  # Use  PR issuer's email
         from: 'burkov1910@gmail.com'
 
   positive_response:
