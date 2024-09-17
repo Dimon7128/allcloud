@@ -1,11 +1,9 @@
 # # Directly define default values for quick testing or pipeline execution
-# variable "instance_count" { default = 2 }
-# variable "ami" { default = "ami-0c55b159cbfafe1f0" }
-# variable "instance_type" { default = "t2.micro" }
-# variable "subnet_ids" { default = ["subnet-44da3b3c", "subnet-0d787a46"] }
 
-# variable "tags" {
-#   default = {
-#     Environment = "test"
-#   }
-# }
+# instance_count = 2
+# ami = "ami-03cc8375791cb8bcf"
+# instance_type = "t2.micro"
+# subnet_ids =  "subnet-0c54b26677193b715valu"
+# tags = "test"
+
+

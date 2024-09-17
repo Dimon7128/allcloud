@@ -13,17 +13,17 @@ variable "ami" {
 variable "instance_type" {
   description = "Type of EC2 instance to create"
   type        = string
-  default = "t2.micro"
+  default     = "t2.micro"
 }
 
 variable "subnet_ids" {
   description = "List of subnet IDs to deploy instances in"
   type        = list(string)
-  default = ["subnet-0d517fadf11587cf7", "subnet-0f76d6b30b2fa69cf"]
+  default     = ["subnet-0c54b26677193b715", "subnet-09a4e1817d45999f8" ]
 }
 
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
-  default     = {}
+  default     = {} 
 }

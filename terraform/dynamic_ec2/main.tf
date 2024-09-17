@@ -1,6 +1,6 @@
 # Define the provider
 provider "aws" {
-  region = "il-central-1" # Oregon
+  region = "eu-west-1" 
 }
 
 # Module declaration
