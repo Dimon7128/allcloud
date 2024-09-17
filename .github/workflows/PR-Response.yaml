@@ -12,7 +12,7 @@ jobs:
     - name: Send email to PR issuer
       uses: dawidd6/action-send-mail@v3
       with:
-        server_address: smtp.gmail.com  # Replace with your email provider's SMTP server
+        server_address: smtp.gmail.com  # Replace  with your email provider's SMTP server
         server_port: 465
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
