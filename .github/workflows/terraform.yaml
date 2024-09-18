@@ -97,10 +97,9 @@ jobs:
           }
 
   negative_response:
-    if: github.event_name == 'pull_request_review'
+    if: ${{ github.event.review.state == 'changes_requested' || github.event.review.state == 'commented' $$ github.event_name == 'pull_request_review' }}
     needs: terraform
     runs-on: ubuntu-latest
-    if: ${{ github.event.review.state == 'changes_requested' || github.event.review.state == 'commented' }}
     steps:
     - name: Send email to PR issuer
       uses: dawidd6/action-send-mail@v3
