@@ -45,7 +45,7 @@ jobs:
     - name: Download Plan of the Relevant PR
       uses: actions/download-artifact@v4
       with:
-        name: plan
+        name: terraform-plan
 
     - name: Terraform Init
       run: terraform init

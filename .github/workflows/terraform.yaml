@@ -58,15 +58,6 @@ jobs:
         terraform plan -no-color > plan.txt
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-
-    - name: Upload Plan
-      uses: actions/upload-artifact@v4
-      with:
-        name: Plan
-        path: |
-          plan.txt
-
-
     - name: Terraform Validate
       run: terraform validate
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
