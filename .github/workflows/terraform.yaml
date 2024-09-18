@@ -97,7 +97,6 @@ jobs:
           }
 
   negative_response:
-    if: ${{ (github.event.review.state == 'changes_requested' || github.event.review.state == 'commented') && github.event_name == 'pull_request_review' }}
     needs: terraform
     runs-on: ubuntu-latest
     steps:
