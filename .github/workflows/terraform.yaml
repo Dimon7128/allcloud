@@ -60,11 +60,9 @@ jobs:
 
 
     - name: Upload Plan
-      run: |
-        pwd
       uses: actions/upload-artifact@v4
       with:
-        name: build-files
+        name: Plan
         path: |
           plan.txt
 
