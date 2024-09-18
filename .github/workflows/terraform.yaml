@@ -4,7 +4,7 @@ on:
     branches:
       - feature
   pull_request_review:
-    types: [submitted]
+    types: [submitted, edited, dismissed]
 
 permissions:
   id-token: write
@@ -97,9 +97,9 @@ jobs:
           }
 
   negative_response:
-    needs: terraform
+    # needs: terraform
     runs-on: ubuntu-latest
-    if: ${{ (github.event.review.state == 'changes_requested' || github.event.review.state == 'commented') }}
+    if: github.event_name == 'pull_request_review' && (github.event.review.state == 'changes_requested' || github.event.review.state == 'commented')
     steps:
     - name: Send email to PR issuer
       uses: dawidd6/action-send-mail@v3
@@ -116,9 +116,9 @@ jobs:
         from: 'burkov1910@gmail.com'
 
   positive_response:
-    needs: terraform
+    # needs: terraform
     runs-on: ubuntu-latest
-    if: ${{ github.event.review.state == 'approved'}}
+    if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
