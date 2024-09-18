@@ -152,7 +152,7 @@ jobs:
 
     - name: What is  inside?
       run: |
-        cd
+        cd artifacts
         ls -a
 
     - name: Unzip Artifact
