@@ -150,6 +150,11 @@ jobs:
         LATEST_ARTIFACT_URL=$(gh run list --workflow=terraform.yaml --limit=1 | grep 'completed' | awk '{print $8}')
         gh run download $LATEST_ARTIFACT_URL --name "terraform-plan" --dir "./artifacts"
 
+    - name: What is  inside?
+      run: |
+        pwd
+        ls -a
+
     - name: Unzip Artifact
       run: |
         unzip ./artifacts/terraform-plan -d ./plan
