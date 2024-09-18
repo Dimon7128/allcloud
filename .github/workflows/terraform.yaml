@@ -153,6 +153,7 @@ jobs:
     - name: What is  inside?
       run: |
         cd artifacts
+        pwd
         ls -a
 
     - name: Terraform Init
