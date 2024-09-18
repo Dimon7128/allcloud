@@ -162,5 +162,5 @@ jobs:
 
     - name: Terraform Apply
       run: |
-        terraform apply -input=false "./artifacts/plan.tfplan"
+        terraform apply -input=false "/home/runner/work/allcloud/allcloud/artifacts"
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
