@@ -1,61 +1,61 @@
-name: PR Review Pipeline
+# name: PR Review Pipeline
 
-on:
-  pull_request_review:
-    types: [submitted]
+# on:
+#   pull_request_review:
+#     types: [submitted]
 
-jobs:
-  negative_response:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.review.state == 'changes_requested' || github.event.review.state == 'commented' }}
-    steps:
-    - name: Send email to PR issuer
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com  # Replace  with your email provider's SMTP server
-        server_port: 465
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: 'PR Review - Changes Requested'
-        body: |
-          Hello, changes have been requested for your pull request.
-          Please address the comments and update the PR.
-        to: 'dmitri.burkov@allcloud.io'  # Use  PR issuer's email
-        from: 'burkov1910@gmail.com'
+# jobs:
+#   negative_response:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.review.state == 'changes_requested' || github.event.review.state == 'commented' }}
+#     steps:
+#     - name: Send email to PR issuer
+#       uses: dawidd6/action-send-mail@v3
+#       with:
+#         server_address: smtp.gmail.com  # Replace  with your email provider's SMTP server
+#         server_port: 465
+#         username: ${{ secrets.SMTP_USERNAME }}
+#         password: ${{ secrets.SMTP_PASSWORD }}
+#         subject: 'PR Review - Changes Requested'
+#         body: |
+#           Hello, changes have been requested for your pull request.
+#           Please address the comments and update the PR.
+#         to: 'dmitri.burkov@allcloud.io'  # Use  PR issuer's email
+#         from: 'burkov1910@gmail.com'
 
-  positive_response:
-    needs: terraform
-    runs-on: ubuntu-latest
-    if: ${{ github.event.review.state == 'approved' }}
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+#   positive_response:
+#     needs: terraform
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.review.state == 'approved' }}
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
 
-    - name: Set up AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-1
+#     - name: Set up AWS credentials
+#       uses: aws-actions/configure-aws-credentials@v1
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: eu-west-1
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: '1.1.0'
+#     - name: Set up Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         terraform_version: '1.1.0'
       
-    - name: Download Plan of the Relevant PR
-      uses: actions/download-artifact@v4
-      with:
-        name: terraform-plan
+#     - name: Download Plan of the Relevant PR
+#       uses: actions/download-artifact@v4
+#       with:
+#         name: terraform-plan
 
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+#     - name: Terraform Init
+#       run: terraform init
+#       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-    - name: Terraform Apply
-      run: |
-        terraform apply -input=false "plan.tfplan"
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+#     - name: Terraform Apply
+#       run: |
+#         terraform apply -input=false "plan.tfplan"
+#       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
 
 
