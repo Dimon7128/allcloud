@@ -95,7 +95,7 @@ jobs:
             console.log("No issue   number found. Skipping comment.");
           }
 
-negative_response:
+  negative_response:
     runs-on: ubuntu-latest
     if: ${{ github.event.review.state == 'changes_requested' || github.event.review.state == 'commented' }}
     steps:
