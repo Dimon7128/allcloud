@@ -148,11 +148,11 @@ jobs:
     - name: Download Latest Artifact
       run: |
         LATEST_ARTIFACT_URL=$(gh run list --workflow=terraform.yaml --limit=1 | grep 'completed' | awk '{print $8}')
-        gh run download $LATEST_ARTIFACT_URL --name "terraform-plan.zip" --dir "./artifacts"
+        gh run download $LATEST_ARTIFACT_URL --name "terraform-plan" --dir "./artifacts"
 
     - name: Unzip Artifact
       run: |
-        unzip ./artifacts/terraform-plan.zip -d ./plan
+        unzip ./artifacts/terraform-plan -d ./plan
 
     - name: Terraform Init
       run: terraform init
