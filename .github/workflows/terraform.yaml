@@ -116,10 +116,9 @@ jobs:
         from: 'burkov1910@gmail.com'
 
   positive_response:
-    if: github.event_name == 'pull_request_review'
+    if: ${{ github.event.review.state == 'approved' && github.event_name == 'pull_request_review' }}
     needs: terraform
     runs-on: ubuntu-latest
-    if: ${{ github.event.review.state == 'approved' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
