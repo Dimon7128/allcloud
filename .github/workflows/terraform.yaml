@@ -116,7 +116,7 @@ jobs:
         from: 'burkov1910@gmail.com'
 
   positive_response:
-    if: ${{ github.event.review.state == 'approved' || github.event_name == 'pull_request_review' }}
+    if: ${{ github.event.review.state == 'approved'}}
     needs: terraform
     runs-on: ubuntu-latest
     steps:
