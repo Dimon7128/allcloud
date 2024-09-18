@@ -24,6 +24,7 @@ jobs:
         from: 'burkov1910@gmail.com'
 
   positive_response:
+    needs: terraform
     runs-on: ubuntu-latest
     if: ${{ github.event.review.state == 'approved' }}
     steps:
