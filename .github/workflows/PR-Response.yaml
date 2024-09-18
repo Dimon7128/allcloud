@@ -41,11 +41,22 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: '1.1.0'
+      
+    - name: Download Build Files
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        path: ./downloaded_artifacts
 
     - name: Terraform Init
       run: terraform init
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: |
+        terraform apply -input=false "plan.tfplan"
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+
+
+
+
