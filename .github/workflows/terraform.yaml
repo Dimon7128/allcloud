@@ -155,10 +155,6 @@ jobs:
         cd artifacts
         ls -a
 
-    - name: Unzip Artifact
-      run: |
-        unzip ./artifacts/terraform-plan -d ./plan
-
     - name: Terraform Init
       run: terraform init
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
