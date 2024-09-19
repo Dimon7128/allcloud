@@ -45,8 +45,8 @@ jobs:
         COMMIT_ID=$(git rev-parse --short HEAD)
         gh pr create --title "Merge feature into main - ${COMMIT_ID}" --body "Automated PR to merge changes from feature to main. Commit ID: ${COMMIT_ID}" --base main --head feature --repo ${{ github.repository }} --reviewer Dimon7128 --label "automated-pr"
     # Creates a pull request automatically if the last commit message contains 'trigger-PR'
-    # The title of the PR includes the short commit   hash to ensure uniqueness
-    
+    # The title of the PR includes the short commit hash to ensure uniqueness
+
     - name: Set up AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
