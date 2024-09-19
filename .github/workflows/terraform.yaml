@@ -21,14 +21,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+
 
     - name: Check last commit message
       id: commit-message
       run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+      # Gets the last commit message and sets it as an output variable
+
 
     - name: Set up GitHub CLI
       run: |
         sudo apt update && sudo apt install -y gh
+      # Installs GitHub CLI for further use in the workflow
 
     - name: Authenticate GitHub CLI
       run: echo "${{ secrets.PAT_TOKEN }}" | gh auth login --with-token
@@ -37,7 +42,14 @@ jobs:
     - name: Create Pull Request
       if: contains(steps.commit-message.outputs.message, 'trigger-PR')
       run: |
-        gh pr create --title "Merge feature into main" --body "Automated PR to merge changes from feature to main." --base main --head feature --repo ${{ github.repository }} --reviewer Dimon7128 --label "automated-pr"
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        gh pr create --title "Merge feature into main - ${COMMIT_ID}" 
+        --body "Automated PR to merge changes from feature to main. 
+        Commit ID: ${COMMIT_ID}" --base main --head feature 
+        --repo ${{ github.repository }} --reviewer Dimon7128 --label "automated-pr"
+    # Creates a pull request automatically if the last commit message contains 'trigger-PR'
+    # The title of the PR includes the short commit hash to ensure uniqueness
+
 
     - name: Set up AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -49,10 +61,15 @@ jobs:
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        terraform_version: '1.1.0'
+        terraform_version: '1.9.5'
 
     - name: Terraform Init
       run: terraform init
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+
+
+    - name: Terraform Validate
+      run: terraform validate
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Terraform Plan
@@ -62,22 +79,11 @@ jobs:
         terraform plan -no-color > plan.txt
       working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
 
-    - name: Terraform Validate
-      run: terraform validate
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
-
     - name: Upload Terraform Plan Output
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
         path: ./terraform/dynamic_ec2/modules/dynamic_ec2/plan.tfplan
-
-
-    # - name: Terraform Apply
-    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    #   run: |
-    #     terraform apply -auto-approve
-    #   working-directory:  ./terraform/dynamic_ec2/modules/dynamic_ec2
 
     - name: Comment Terraform Plan on PR
       uses: actions/github-script@v5
