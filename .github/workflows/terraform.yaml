@@ -16,7 +16,11 @@ jobs:
   terraform:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    environment: production
+    strategy:
+      matrix:
+        environment:
+          - test
+          - prod
 
     steps:
     - name: Checkout code
@@ -61,25 +65,25 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}
 
 
     - name: Terraform Validate
       run: terraform validate
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}
 
     - name: Terraform Plan
       id: plan
       run: |
         terraform plan -out=plan.tfplan
         terraform plan -no-color > plan.txt
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}
 
     - name: Upload Terraform Plan Output
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
-        path: ./terraform/dynamic_ec2/modules/dynamic_ec2/plan.tfplan
+        path: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}/plan.tfplan
 
     
 
@@ -157,9 +161,9 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}
 
     - name: Terraform Apply
       run: |
         terraform apply -input=false "/home/runner/work/allcloud/allcloud/artifacts/plan.tfplan"
-      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2
+      working-directory: ./terraform/dynamic_ec2/modules/dynamic_ec2/${{ matrix.environment }}
