@@ -31,7 +31,7 @@ jobs:
     - name: Check last commit message
       id: commit-message
       run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
-      # Gets the last commit message and sets it as an output variable
+      # Gets the last commit message and sets i  t as an output variable
 
 
     - name: Set up GitHub CLI
