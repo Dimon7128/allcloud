@@ -1,20 +1,10 @@
 name: Terraform CI/CD
 on:
-  # push:
-  #   branches:
-  #     - feature
-  # pull_request_review:
-  #   types: [submitted, edited, dismissed]
-
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Select environment (test or prod)'
-        required: true
-        default: 'test'
-        options:
-          - 'test'
-          - 'prod'
+  push:
+    branches:
+      - feature
+  pull_request_review:
+    types: [submitted, edited, dismissed]
 
 permissions:
   id-token: write
@@ -33,7 +23,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
     - name: Set working directory
-      run: echo "TF_WORKING_DIR=./terraform/dynamic_ec2/${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+      run: echo "TF_WORKING_DIR=./terraform/dynamic_ec2/prod >> $GITHUB_ENV
 
 
     - name: Check last commit message
