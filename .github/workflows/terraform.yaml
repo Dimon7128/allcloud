@@ -23,7 +23,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
     - name: Set working directory
-      run: echo "TF_WORKING_DIR=./terraform/dynamic_ec2/prod >> $GITHUB_ENV
+      run: echo "TF_WORKING_DIR=./terraform/dynamic_ec2/prod" >> $GITHUB_ENV
 
 
     - name: Check last commit message
