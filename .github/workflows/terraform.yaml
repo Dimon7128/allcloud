@@ -25,13 +25,6 @@ jobs:
     - name: Set working directory
       run: echo "TF_WORKING_DIR=./terraform/dynamic_ec2/prod" >> $GITHUB_ENV
 
-
-    - name: Check last commit message
-      id: commit-message
-      run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
-      # Gets the last commit message and sets i  t as an output variable
-
-
     - name: Set up GitHub CLI
       run: |
         sudo apt update && sudo apt install -y gh
