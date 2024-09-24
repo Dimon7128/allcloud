@@ -56,25 +56,28 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: TF_WORKING_DIR
+      working-directory:  ${{ env.TF_WORKING_DIR }}
+
 
 
     - name: Terraform Validate
       run: terraform validate
-      working-directory: TF_WORKING_DIR
+      working-directory:  ${{ env.TF_WORKING_DIR }}
+
 
     - name: Terraform Plan
       id: plan
       run: |
         terraform plan -out=plan.tfplan
         terraform plan -no-color > plan.txt
-      working-directory: TF_WORKING_DIR
+      working-directory:  ${{ env.TF_WORKING_DIR }}
+
 
     - name: Upload Terraform Plan Output
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
-        path: TF_WORKING_DIR/plan.tfplan
+        path:  ${{ env.TF_WORKING_DIR }}/plan.tfplan
 
     
 
@@ -152,9 +155,10 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: TF_WORKING_DIR
+      working-directory:  ${{ env.TF_WORKING_DIR }}
 
     - name: Terraform Apply
       run: |
         terraform apply -input=false "/home/runner/work/allcloud/allcloud/artifacts/plan.tfplan"
-      working-directory: TF_WORKING_DIR
+      working-directory:  ${{ env.TF_WORKING_DIR }}
+
